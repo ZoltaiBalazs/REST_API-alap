@@ -1,0 +1,38 @@
+{
+    "address":{
+        "building":"testBuilding",
+        "coord":
+        [
+            0.0,
+            0.0
+        ],
+        "street":"testStreet",
+        "zipcode":"11224"
+    },
+    "borough":"Brooklyn",
+    "cuisine":"testCuisine ",
+    "grades": [
+        {
+            "date": "2014-06-06T00:00:00Z",
+            "grade": "A",
+            "score": 5
+        },
+        {
+            "date": "2013-06-06T00:00:00Z",
+            "grade": "A",
+            "score": 7
+        },
+        {
+            "date": "2012-04-12T00:00:00Z",
+            "grade": "A",
+            "score": 12
+        },
+        {
+            "date": "2011-10-11T00:00:00Z",
+            "grade": "A",
+            "score": 12
+        }
+    ],
+    "name":"testName",
+    "restaurant_id":"testId"
+}

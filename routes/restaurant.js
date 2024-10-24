@@ -1,45 +1,43 @@
 const express = require("express");
-const restaurantRouter = express.Router("");
-const restaurantModel = require("../models/restaurantModel");
+const router = express.Router();
+const restaurantModel = require('../models/restaurant.js');
 
-restaurantRouter.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
   const data = new restaurantModel(req.body);
-
-  try{
+  try {
     const dataToSave = await data.save();
-    res.status(201).json(dataToSave)
+    res.status(200).json(dataToSave)
   }
-  catch(error){
-    res.status(400).json({message: error.message})
+  catch (error) {
+    res.status(400).json({ message: error.message })
   }
-});
+})
 
-restaurantRouter.get('/', async (req, res) => {
-  try{
+router.get('/restaurants', async (req, res) => {
+  try {
     const data = await restaurantModel.find();
-    res.json(data)
+    console.log(res.json(data));
   }
-  catch(error){
-    res.status(500).json({message: error.message})
+  catch (error) {
+    res.status(400).json({ message: error.message })
   }
-});
+})
 
-restaurantRouter.get('/:id', async (req, res) => {
-  try{
+router.get('/restaurants/:id', async (req, res) => {
+  try {
     const data = await restaurantModel.findById(req.params.id);
-    res.json(data)
+    console.log(res.json(data));
   }
-    catch(error){
-    res.status(500).json({message: error.message})
+  catch (error) {
+    res.status(400).json({ message: error.message })
   }
-});
+})
 
-restaurantRouter.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const updatedData = req.body;
     const options = { new: true };
-    
     const result = await restaurantModel.findByIdAndUpdate(
       id, updatedData, options
     )
@@ -50,15 +48,15 @@ restaurantRouter.patch('/:id', async (req, res) => {
   }
 })
 
-restaurantRouter.delete('/:id', async (req, res) => {
+
+router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const data = await restaurantModel.findByIdAndDelete(id)
-    res.send(`Document with ${data.name} has been deleted..`)
-  }
-    catch (error) {
-    res.status(400).json({ message: error.message })
+    res.send(`User with ${data.name} name has been deleted.`)
+  } catch (error) {
+    console.log(error)
   }
 })
 
-module.exports = restaurantRouter;
+module.exports = router;
