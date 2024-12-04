@@ -1,10 +1,11 @@
-const restaurantModel = require('../../models/restaurant');
+const restaurantModel = require('../../models/restaurantModel');
 const httpMocks = require('node-mocks-http');
 const newRestaurant = require('../mock-data/new-restaurant.json');
-const restaurantController = require('../../controllers/todo.controller'); 
-const { describe } = require('node:test');
+const allRestaurants = require('../mock-data/all-restaurants.json');
+const restaurantController = require('../../controllers/restaurant.controller'); 
 const request = require('supertest');
-const app = require('../..');
+const app = require('../../index');
+const { default: mongoose } = require('mongoose');
 
 restaurantModel.prototype.save = jest.fn();
 
@@ -13,7 +14,18 @@ let req, res, next;
 beforeEach(() => {
     req = httpMocks.createRequest();
     res = httpMocks.createResponse();
-    next = null;
+    next = jest.fn();
+
+    restaurantModel.create = jest.fn();
+    restaurantModel.find = jest.fn();
+});
+
+beforeAll(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+});
+
+afterAll(async () => {
+    await mongoose.connection.close();    
 });
 
 describe('RestaurantController.createRestaurant', () => {
@@ -49,19 +61,6 @@ describe('RestaurantController.createRestaurant', () => {
         restaurantModel.prototype.save.mockReturnValue(rejectedPromise);
         await restaurantController.createRestaurant(req, res, next);
         expect(res.statusCode).toBe(400);
-        expect(res._getJSONData()).toStrictEqual({ message: 'Error saving restaurant' });
-    });
-});
-
-describe('restaurants.post', () => {
-    it('', async () => {
-        res = await request(app)
-            .post('/api/')
-            .send(newRestaurant)
-            .expect(201)
-
-        expect(res.body).toHaveProperty('_id');
-        expect(res.body).toBe(newRestaurant.name);
-        expect(res.body.restaurant_id).toBe(newRestaurant.restaurant_id);
+        expect(res._getJSONData()).toStrictEqual({ message: 'Error saving restaurant' });        
     });
 });

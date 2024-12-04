@@ -1,0 +1,23 @@
+[
+    {
+        "borough": "Manhattan",
+        "cuisine": "Italian",
+        "name": "Pasta Paradise",
+        "restaurant_id": "pasta-paradise-001",
+        "_id": "1"
+      },
+      {
+        "borough": "Brooklyn",
+        "cuisine": "Mexican",
+        "name": "Taco Haven",
+        "restaurant_id": "taco-haven-002",
+        "_id": "2"
+      },
+      {
+        "borough": "Queens",
+        "cuisine": "Japanese",
+        "name": "Sushi Zen",
+        "restaurant_id": "sushi-zen-003",
+        "_id": "3"
+      }
+]
