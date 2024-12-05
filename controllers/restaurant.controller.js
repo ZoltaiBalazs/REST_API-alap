@@ -34,3 +34,42 @@ exports.findRestaurantsById = async (req, res, next) => {
         next(error);
       }
 };
+
+exports.patchRestaurant = async (req, res, next) => {
+  try {
+    const data = await restaurantModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        useFindAndModify: false
+      }
+    );
+    if (data) {
+      res.status(200).json(data);          
+    }
+    else {
+      res.status(404).send();
+    }
+  }
+  catch (error) {
+    next(error);
+  }
+}
+
+exports.deleteRestaurant = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const data = await restaurantModel.findByIdAndDelete(id)    
+
+    if (data) {
+      res.status(200).send(`Restaurant with ${data.name} name has been deleted.`);
+    }
+    else {
+      res.status(404).send();
+    }
+
+  } catch (error) {
+    next(error);
+  }
+}

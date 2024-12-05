@@ -1,11 +1,7 @@
 const restaurantModel = require('../../models/restaurantModel');
 const httpMocks = require('node-mocks-http');
 const newRestaurant = require('../mock-data/new-restaurant.json');
-const allRestaurants = require('../mock-data/all-restaurants.json');
 const restaurantController = require('../../controllers/restaurant.controller'); 
-const request = require('supertest');
-const app = require('../../index');
-const { default: mongoose } = require('mongoose');
 
 restaurantModel.prototype.save = jest.fn();
 
@@ -17,15 +13,6 @@ beforeEach(() => {
     next = jest.fn();
 
     restaurantModel.create = jest.fn();
-    restaurantModel.find = jest.fn();
-});
-
-beforeAll(() => {
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-});
-
-afterAll(async () => {
-    await mongoose.connection.close();    
 });
 
 describe('RestaurantController.createRestaurant', () => {
