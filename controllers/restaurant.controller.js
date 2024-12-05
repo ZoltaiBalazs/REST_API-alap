@@ -23,9 +23,14 @@ exports.findRestaurantsAll = async (req, res, next) => {
 exports.findRestaurantsById = async (req, res, next) => {
     try {
         const data = await restaurantModel.findById(req.params.id);
-        console.log(res.json(data));
+        if (data) {
+          res.status(200).json(data);          
+        }
+        else {
+          res.status(404).send();
+        }
       }
       catch (error) {
-        res.status(400).json({ message: error.message })
+        next(error);
       }
 };

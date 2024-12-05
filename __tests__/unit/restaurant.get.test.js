@@ -18,6 +18,7 @@ beforeEach(() => {
 
     restaurantModel.create = jest.fn();
     restaurantModel.find = jest.fn();
+    restaurantModel.findById = jest.fn();
 });
 
 afterAll(async () => {
@@ -51,5 +52,24 @@ describe('RestaurantController.findRestaurantsAll', () => {
 describe('RestaurantController.findRestaurantsById', () => {
     it('should have a findRestaurantsById function', async () => {
         expect(typeof restaurantController.findRestaurantsById).toBe('function');
+    });
+    it('Should call restaurantModel.findById with route params', async () => {
+        req.params.id = '1';
+        await restaurantController.findRestaurantsById(req, res, next);
+        expect(restaurantModel.findById).toBeCalledWith('1');
+    });
+    it('Should return status code 200 with restaurant', async () => {
+        restaurantModel.findById.mockReturnValue(allRestaurants[0]);
+        await restaurantController.findRestaurantsAll(req, res, next);
+        expect(res.statusCode).toBe(200);
+        expect(res._isEndCalled).toBeTruthy();
+        expect(res._getJSONData()).toStrictEqual(allRestaurants[0]);
+    });
+    it('should handel errors', async () => {
+        const errorMsg = { messgae: "Error finding" };
+        const rejectedPromise = Promise.reject(errorMsg);
+        restaurantModel.findById.mockReturnValue(rejectedPromise);
+        await restaurantController.findRestaurantsById(req, res, next);
+        expect(next).toBeCalledWith(errorMsg)
     });
 });
