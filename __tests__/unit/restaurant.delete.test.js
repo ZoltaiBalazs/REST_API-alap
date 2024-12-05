@@ -27,18 +27,12 @@ describe('RestaurantController.createRestaurant', () => {
         expect(restaurantModel.findByIdAndDelete).toHaveBeenCalled();
     });
 
-    // it('should return 201 response code', async () => {
-    //     restaurantModel.prototype.save.mockReturnValue(newRestaurant);
-    //     await restaurantController.createRestaurant(req, res, next);
-    //     expect(res.statusCode).toBe(201);
-    //     expect(res._isEndCalled()).toBeTruthy();
-    // });
-
-    // it('should return json body in response', async () => {
-    //     restaurantModel.prototype.save.mockReturnValue(newRestaurant);
-    //     await restaurantController.createRestaurant(req, res, next);
-    //     expect(res._getJSONData()).toStrictEqual(newRestaurant);
-    // });
+    it('should return 200 response code', async () => {
+        restaurantModel.findByIdAndDelete.mockReturnValue(newRestaurant);
+        await restaurantController.deleteRestaurant(req, res, next);
+        expect(res.statusCode).toBe(200);
+        expect(res._isEndCalled()).toBeTruthy();
+    });
 
     it('should handle errors', async () => {
         const errorMessage = { message: 'Error deleting restaurant' };

@@ -31,21 +31,21 @@ describe('RestaurantController.patchRestaurant', () => {
     it('should return res with json and status 200', async () => {
         req.params.id = '1';
         req.body = newRestaurant;
-        restaurantModel.findByIdAndUpdate.mockReturnValue(newRestaurant);
+        restaurantModel.findByIdAndUpdate.mockResolvedValue(newRestaurant);
         await restaurantController.patchRestaurant(req, res, next);
         expect(res.statusCode).toBe(200);
         expect(res._isEndCalled).toBeTruthy();
-        expect(res.body).toStrictEqual(newRestaurant);
+        expect(res._getJSONData()).toStrictEqual(newRestaurant);
     });
     it('should handel errors', async () => {
         const errorMsg = { messgae: "Error finding" };
         const rejectedPromise = Promise.reject(errorMsg);
-        restaurantModel.findByIdAndUpdate.mockReturnValue(rejectedPromise);
+        restaurantModel.findByIdAndUpdate.mockResolvedValue(rejectedPromise);
         await restaurantController.patchRestaurant(req, res, next);
         expect(next).toHaveBeenCalledWith(errorMsg)
     });
     it('should return 404 when item doesnt exist', async () => {
-        restaurantModel.findByIdAndUpdate.mockReturnValue(null);
+        restaurantModel.findByIdAndUpdate.mockResolvedValue(null);
         await restaurantController.patchRestaurant(req, res, next);
         expect(res.statusCode).toBe(404);
         expect(res._isEndCalled()).toBeTruthy();
